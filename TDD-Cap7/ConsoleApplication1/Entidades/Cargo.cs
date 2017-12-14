@@ -26,6 +26,9 @@ namespace ConsoleApplication1.Entidades
             this.Regra = regra;
         }
 
+        public Cargo()
+        {
+        }
     }
 
 }
