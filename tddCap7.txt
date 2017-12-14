@@ -1,40 +1,161 @@
-**************Cap�tulo 7 TDD e a Coes�o
+﻿**************Capítulo 7 TDD e a Coesão
 
 **Intr
 
--coes�o
+-coesão
 substantivo feminino
 1.
-f�s for�a de atra��o entre �tomos e mol�culas que constituem um corpo, e que resiste a que este se quebre [� tb. um tipo de for�a presente na coalesc�ncia.].
+fís força de atração entre átomos e moléculas que constituem um corpo, e que resiste a que este se quebre [É tb. um tipo de força presente na coalescência.].
 2.
-fig. unidade l�gica, coer�ncia de um pensamento, de uma obra.
+fig. unidade lógica, coerência de um pensamento, de uma obra.
 "o autor demonstrou com clareza a c. de suas ideias"
 3.
-fig. associa��o �ntima, solidariedade entre os integrantes de um grupo.
+fig. associação íntima, solidariedade entre os integrantes de um grupo.
 "c. dos partidos de esquerda"
 Origem
-? ETIM fr. coh�sion 'id.', do lat.medv. cohaesio,onis 'id.'
+⊙ ETIM fr. cohésion 'id.', do lat.medv. cohaesio,ōnis 'id.'
 
 
+- Classes com poucas responsabilidades são mais simples e mais fáceis de serem evoluídas.
 
-- Classes com poucas responsabilidades s�o mais simples e mais f�ceis de serem evolu�das.
 
-
-- Uma classe coesa � justamente aquela que possui apenas uma �nica responsabi-
+- Uma classe coesa é justamente aquela que possui apenas uma única responsabi-
 lidade.
 
-- Em sistemas orientados a objetos, a ideia � sempre buscar por classes coesas.
+- Em sistemas orientados a objetos, a ideia é sempre buscar por classes coesas.
 
 - como TDD nos ajuda a encontrar classes com proble-
-mas de coes�o e, a partir dessa informa��o, como refatorar o c�digo.????
+mas de coesão e, a partir dessa informação, como refatorar o código.????
 
 
-*** Novamente o Problema do C�lculo de Sal�rio
 
-Relembrando o problema, � necess�rio calcular o sal�rio dos funcion�rios da em-
-presa a partir do seu cargo. Para isso, � necess�rio seguir as regras abaixo:
+--------------------7.1  Novamente o Problema do Cálculo de Salário
 
-� Desenvolvedores possuem 20% de desconto caso seu sal�rio seja maior do que
-R$ 3000,0. Caso contr�rio, o desconto � de 10%.
-� DBAs e testadores possuem desconto de 25% se seus sal�rios forem maiores
-do que R$ 2500,0. 15%, em caso contr�rio.
+
+*** Novamente o Problema do Cálculo de Salário
+
+Relembrando o problema, é necessário calcular o salário dos funcionários da em-
+presa a partir do seu cargo. Para isso, é necessário seguir as regras abaixo:
+
+• Desenvolvedores possuem 20% de desconto caso seu salário seja maior do que
+R$ 3000,0. Caso contrário, o desconto é de 10%.
+• DBAs e testadores possuem desconto de 25% se seus salários forem maiores
+do que R$ 2500,0. 15%, em caso contrário.
+
+
+- Apresentar Codigo Existente
+
+- O problema começa a aparecer quando testamos um cargo diferente de desen-
+volvedor. Por exemplo, os testes abaixo validam o comportamento da classe para
+
+DBAs:
+
+
+!!!!!!!!codigos
+
+-Escrever mais de um teste de uma só vez?
+No código acima, mostrei diretamente dois métodos de teste de uma só
+vez. A pergunta é: você deve fazer isso? Afinal, isso não é TDD.
+Nesse momento, minha sugestão é para que você escreva teste a teste,
+veja cada um falhar, e faça cada um passar na hora certa. Apenas por
+questões de didática e facilidade de leitura, colei ambos de uma só vez.
+Mais para frente, discutiremos sobre quando ou não usar TDD
+
+
+---------------------7.2  Ouvindo o feedback dos testes
+
+- Todos os testes passam e a implementação resolve o problema atual. Mas será que o
+código está simples e fácil de ser mantido? O código de produção nesse momento
+possui alguns problemas graves em termos de evolução.
+
+*** O primeiro deles é a complexidade (if dentro de if)
+
+- Quanto maior a quantidade de condicionais, mais complexo o código fica.
+
+- Complexidade ciclomática (a, de maneira simplificada,
+é o número de diferentes caminhos que seu método pode executar.)
+
+
+**** Agora, do ponto de vista de design, o código atual apresenta um problema ainda
+pior: sempre que criarmos um novo cargo no sistema (e isso é razoavelmente simples,
+basta adicionar um novo item no enum), é necessário fazer essa alteração também
+na calculadora de salário. Em um sistema real, essas “dependências implícitas”
+são geralmente uma das causa de sistemas apresentarem constantes problemas, pois
+o desenvolvedor nunca sabe em quais classes ele precisa mexer para propagar uma
+nova regra de negócio. Imagine que a cada novo cargo criado, o desenvolvedor precisasse
+atualizar outras 20 classes? Em algum momento ele esqueceria, afinal nada
+“força” ele a fazer essa alteração. Códigos frágeis como esse são comuns em implementações
+geralmente procedurais.
+
+- Mas o teste, de certa, já estava avisando sobre esses problemas. Veja a bateria
+atual de testes:
+DeveCalcularSalarioParaDesenvolvedoresComSalarioAbaixoDoLimite()
+DeveCalcularSalarioParaDesenvolvedoresComSalarioAcimaDoLimite()
+DeveCalcularSalarioParaDBAsComSalarioAbaixoDoLimite()
+DeveCalcularSalarioParaDBAsComSalarioAcimaDoLimite()
+DeveCalcularSalarioParaTestadoresComSalarioAbaixoDoLimite()
+DeveCalcularSalarioParaTestadoresComSalarioAcimaDoLimite()
+
+- Repare que essa bateria de testes tende a ser infinita
+- Quanto mais cargos aparecerem, mais testes serão criados nessa classe
+
+
+-Se a classe de testes possui muitos testes,
+isso quer dizer que a classe de produção possui muitas responsabilidades. E, em
+sistemas orientados a objetos, sabemos que classes devem ser coesas, conter apenas
+uma única responsabilidade.
+
+
+-Quando uma classe de testes tende a crescer indefinidamente, isso pode ser um sinal
+de má coesão na classe de produção
+
+-Além disso, repare no nome dos testes: deve calcular salário para desenvolvedores
+com salario abaixo do limite
+-Repare que esse “para desenvolvedores” indica
+que o comportamento da classe muda de acordo com uma característica do objeto
+que o método recebe como parâmetro (no caso, o cargo do funcionário).
+-Isso nosleva a crer que todo novo cargo precisará de um novo teste para o cargo novo. Qualquer
+variação dessa no nome do teste, (“para X”, “se X”, “como X”, etc) pode indicar
+um problema na abstração dessa classe
+-Em um bom sistema orientado a objetos, os
+comportamentos evoluem naturalmente, geralmente por meio da criação de novas
+classes, e não pela alteração das classes já existentes.
+
+
+-Ou seja, de bater o olho no código de testes, encontramos duas maneiras baratas
+de encontrar problemas na classe de produção: classes de teste que não param de
+crescer e nomes de testes que evidenciam a falta de uma abstração melhor para o
+problema
+
+-O trabalho do desenvolvedor nesse momento é entender o porquê isso
+está acontecendo, e eventualmente refatorar a classe de produção para resolver esse
+problema.
+
+
+-Complexidade ciclomática e quantidade de testes
+Já que a complexidade ciclomática nos diz a quantidade de diferentes caminhos
+que um método tem, e já que sabemos que devemos testar todos
+os diferentes comportamentos do nosso método, é possível inferir que a
+complexidade ciclomática tem uma relação direta com a quantidade de
+testes de um método.
+Ou seja, quanto maior a complexidade ciclomática, maior a quantidade
+de testes necessários para garantir seu comportamento. Portanto, um
+código com alta complexidade ciclomática, além de ser confuso, ainda
+exige um alto esforço para ser testado.
+
+
+
+
+----------------------- 7.3 Testes em métodos privados?
+
+
+
+
+--------------------------- 7.4  Resolvendo o Problema da Calculadora de Salário
+
+
+---------------------- 7.5 O que olhar no teste em relação a coesão?
+
+
+
+---------- 7.6 Conclusão
