@@ -1,0 +1,9 @@
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\bin\Debug\UnitTestProject1.dll
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\bin\Debug\ConsoleApplication1.exe
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\bin\Debug\ConsoleApplication1.pdb
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\obj\Debug\UnitTestCap7.csprojResolveAssemblyReference.cache
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\obj\Debug\UnitTestProject1.dll
+c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\UnitTestProject1\obj\Debug\UnitTestProject1.pdb

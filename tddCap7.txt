@@ -1,0 +1,40 @@
+**************Capítulo 7 TDD e a Coesão
+
+**Intr
+
+-coesão
+substantivo feminino
+1.
+fís força de atração entre átomos e moléculas que constituem um corpo, e que resiste a que este se quebre [É tb. um tipo de força presente na coalescência.].
+2.
+fig. unidade lógica, coerência de um pensamento, de uma obra.
+"o autor demonstrou com clareza a c. de suas ideias"
+3.
+fig. associação íntima, solidariedade entre os integrantes de um grupo.
+"c. dos partidos de esquerda"
+Origem
+? ETIM fr. cohésion 'id.', do lat.medv. cohaesio,onis 'id.'
+
+
+
+- Classes com poucas responsabilidades são mais simples e mais fáceis de serem evoluídas.
+
+
+- Uma classe coesa é justamente aquela que possui apenas uma única responsabi-
+lidade.
+
+- Em sistemas orientados a objetos, a ideia é sempre buscar por classes coesas.
+
+- como TDD nos ajuda a encontrar classes com proble-
+mas de coesão e, a partir dessa informação, como refatorar o código.????
+
+
+*** Novamente o Problema do Cálculo de Salário
+
+Relembrando o problema, é necessário calcular o salário dos funcionários da em-
+presa a partir do seu cargo. Para isso, é necessário seguir as regras abaixo:
+
+• Desenvolvedores possuem 20% de desconto caso seu salário seja maior do que
+R$ 3000,0. Caso contrário, o desconto é de 10%.
+• DBAs e testadores possuem desconto de 25% se seus salários forem maiores
+do que R$ 2500,0. 15%, em caso contrário.
