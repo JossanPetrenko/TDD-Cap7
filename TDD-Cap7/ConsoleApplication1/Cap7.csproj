@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entidades\CalculadoraDeSalario.cs" />
+    <Compile Include="Entidades\Cargo.cs" />
     <Compile Include="Entidades\Funcionario.cs" />
     <Compile Include="Entidades\Regras\DezOuVintePorCento.cs" />
     <Compile Include="Entidades\Regras\QuinzeOuVinteCincoPorCento.cs" />

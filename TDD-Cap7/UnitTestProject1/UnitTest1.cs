@@ -17,7 +17,7 @@ namespace UnitTestProject1
             CalculadoraDeSalario calculadora = new CalculadoraDeSalario();
 
             Funcionario desenvolvedor = new Funcionario
-                ("Mauricio", 1500.0, Cargos.DESENVOLVEDOR);
+                ("Mauricio", 1500.0, new Cargo().DESENVOLVEDOR);
 
             double salario = calculadora.CalculaSalario(desenvolvedor);
 
@@ -35,7 +35,7 @@ namespace UnitTestProject1
         {
             CalculadoraDeSalario calculadora = new CalculadoraDeSalario();
             Funcionario desenvolvedor = new Funcionario
-            ("Mauricio", 1500.0, Cargos.DBA);
+            ("Mauricio", 1500.0, new Cargo().DBA);
             double salario = calculadora.CalculaSalario(desenvolvedor);
             Assert.AreEqual(1500.0 * 0.85, salario, 0.00001);
         }
@@ -45,7 +45,7 @@ namespace UnitTestProject1
         {
             CalculadoraDeSalario calculadora = new CalculadoraDeSalario();
             Funcionario desenvolvedor = new Funcionario
-            ("Mauricio", 4500.0, Cargos.DBA);
+            ("Mauricio", 4500.0, new Cargo().DBA);
             double salario = calculadora.CalculaSalario(desenvolvedor);
             Assert.AreEqual(4500.0 * 0.75, salario, 0.00001);
         }
