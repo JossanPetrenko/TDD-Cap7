@@ -5,3 +5,11 @@ c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\ConsoleApplicat
 c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\ConsoleApplication1\bin\Debug\nunit.framework.xml
 c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
 c:\users\petrenko\documents\visual studio 2015\Projects\TDD-Cap7\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\bin\Debug\nunit.framework.dll
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\bin\Debug\nunit.framework.xml
+C:\GitHub\Tdd-Cap7\TDD-Cap7\ConsoleApplication1\obj\Debug\Cap7.csprojResolveAssemblyReference.cache
