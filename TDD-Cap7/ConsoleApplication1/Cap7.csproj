@@ -52,6 +52,7 @@
     <Compile Include="Entidades\Funcionario.cs" />
     <Compile Include="Entidades\Regras\DezOuVintePorCento.cs" />
     <Compile Include="Entidades\Regras\QuinzeOuVinteCincoPorCento.cs" />
+    <Compile Include="Entidades\Regras\RegraDeCalculo.cs" />
     <Compile Include="Enums\Cargos.cs" />
     <Compile Include="Interfaces\IRegraDeCalculo.cs" />
     <Compile Include="Program.cs" />

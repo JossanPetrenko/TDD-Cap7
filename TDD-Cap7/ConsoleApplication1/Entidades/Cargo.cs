@@ -11,6 +11,7 @@ namespace ConsoleApplication1.Entidades
 {
     public class Cargo
     {
+
         public Cargo DESENVOLVEDOR { get { return new Cargo(new DezOuVintePorCento()); } }
 
         public Cargo DBA { get { return new Cargo(new QuinzeOuVinteCincoPorCento()); } }
@@ -25,9 +26,6 @@ namespace ConsoleApplication1.Entidades
             this.Regra = regra;
         }
 
-        public Cargo()
-        {
-        }
     }
 
 }

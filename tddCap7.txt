@@ -148,14 +148,161 @@ exige um alto esforço para ser testado.
 
 ----------------------- 7.3 Testes em métodos privados?
 
+-Veja agora o método QuinzeOuVinteCincoPorCentoDeDesconto(). Ele é responsável
+por calcular quinze ou vinte por cento de desconto de acordo com o salário do funcionário.
+Um método não complicado, mas que possui sim alguma regra de negócio
+envolvida. É necessário testá-lo
 
+- A pergunta é como fazer para testá-lo, afinal ele é
+um método privado, o que o impossibilita de ser invocado diretamente por um teste.
+
+- Uma discussão grande em torno da comunidade de software é justamente sobre
+a necessidade de se testar métodos privados
+-Alguns desenvolvedores acreditam
+que métodos como esse devem ser testados, e optam por fazer uso de frameworks
+que possibilitam a escrita de testes para métodos privados (através de uso de reflection,
+o framework consegue invocar esse método). Outros acreditam que você não
+deve testá-lo diretamente, mas sim indiretamente, através de um método público
+que faz uso. No caso, igual feito nos testes acima (o método CalculaSalario() invoca
+o método QuinzeOuVinteCincoPorCentoDeDesconto()).
+
+-Novamente a discussão sobre o feedback que o teste dá ao desenvolvedor. Se o
+desenvolvedor sente a necessidade de testar um método privado de maneira isolada,
+direta, ou seja, sem passar por um método público que faz uso dele, muito
+provavelmente é porque esse método privado faz muita coisa.
+-Métodos privados são geralmente subdivisões de um método público maior. Optamos
+por eles para facilitar a leitura desse método público. Mas muitas vezes criamos
+métodos privados que trabalham demais e possuem uma responsabilidade tão
+bem definida que poderia constituir uma nova classe.
+-Ao perceber isso, o desenvolvedor deve se perguntar se o método está realmente
+no lugar certo. Talvez movê-lo para alguma outra classe, ou até mesmo criar uma
+nova justamente para acomodar esse comportamento faça sentido
+-Portanto, evite testar métodos privados. Leve isso como um feedback sobre a
+qualidade da sua classe. Extraia esse comportamento para uma nova classe ou movao
+para uma classe já existente. Transforme-o em um método público que faça sentido
+e aí teste-o decentemente
 
 
 --------------------------- 7.4  Resolvendo o Problema da Calculadora de Salário
 
+-Sempre que houver uma separação dos comportamentos em várias pequenas classes,
+com o objetivo de torná-las mais coesas, é necessário uni-las novamente para se obter
+o comportamento maior, esperado
+-Para fazer isso de maneira elegante, é necessário algum conhecimento em orientação
+a objetos. Muitos padrões de projeto [19], por exemplo, tem como objetivo
+unir, de maneira clara, classes que precisam trabalhar juntas
+
+-Para esse novo problema, por exemplo, podemos começar por resolver o problema
+dos métodos privados
+
+-Vamos extraí-los para classes específicas, cada uma
+responsável por uma regra. Como elas são semelhantes, ambas classes implementarão
+a mesma interface RegraDeCalculo. Essa implementação se parece com o padrão
+de projeto Strategy:
+
+!!!!!!COdigo (Interface Regras de Calculo + Regras de Calculo)
+
+
+-Repare que cada regra de cálculo agora está em sua classe específica, bem definida.
+Testar essa classe agora é fácil. Teremos 2 ou 3 testes e pronto. Diferentemente
+da antiga classe CalculadoraDeSalario, a bateria de ambas as regras de cálculo não
+tendem a crescer infinitamente. Isso nos mostra que essas classes são razoavelmente
+coesas
+
+-Agora, para forçar o desenvolvedor a sempre definir uma regra de cálculo para
+todo e qualquer novo cargo, podemos forçá-lo a decidir isso na própria enumeração
+de Cargo. Se fizermos esse Cargo virar uma classe, conseguimos forçá-la a sempre
+receber uma estratégia de cálculo. Podemos ainda criar métodos que já nos devolvem
+esses cargos, igual tínhamos com a enumeração. Veja:
+
+
+!!!!!!COdigo ( Cargo Class + 2º CalculadoraDeSalario + Refatoração Testes)
+
+-Ela somente repassa a chamada para a regra de cálculo. Nosso código agora
+está muito mais orientado a objetos. Se um novo cargo aparecer, precisamos apenas
+adicionar na classe Cargo. Se uma nova regra de cálculo aparecer, basta criarmos
+uma nova classe que implementa a interface certa. Todas as classes são pequenas
+e fáceis de serem testadas. Nosso sistema evolui facilmente e todo código escrito é
+simples.
+
+-Preciso testar a classe CalculadoraDeSalario?
+A calculadora de salário agora contém apenas uma linha, que repassa
+para a regra fazer o cálculo.
+Talvez essa classe não precise nem existir mais no sistema. Mas, caso
+exista, talvez não seja necessário testá-la. O teste só garantiria a delegação
+para a regra específica. Se um dia a calculadora ficar mais complexa, aí
+sim testes farão mais sentido para ela.
+
+-Ferreira fala
+A refatoração do código de exemplo da calculadora de salário demonstrou muito
+bem como a atenção à coesão nos leva a um design melhor das nossas classes. Será
+que podemos ir além? Outro mau cheiro no código é a repetição, no caso, da ló-
+gica de decisão a respeito do desconto a ser aplicado. Observamos que os métodos
+Calcula() das duas implementações de regra de cálculo são muito similares. Podemos
+abstrair essa lógica fazendo da IRegraDeCalculo uma classe abstrata:
+
+!!!!!Codigo
+
+
+Assim eliminaríamos a duplicação; esse tipo de estrutura é chamada deTemplate
+Method. Mas será mesmo que o design ficou melhor? Não existe uma resposta fácil
+a essa pergunta, é um trade-off entre flexibilidade e abstração, mas na minha opinião
+eu diria que não, que nesse caso o nível de abstração obtido não vale o custo.
+
 
 ---------------------- 7.5 O que olhar no teste em relação a coesão?
+
+-Como visto acima, os testes podem nos avisar sobre problemas de coesão em nossas
+classes. Lembre-se que classes não coesas fazem muita coisa; testar “muita coisa” não
+é fácil. Escrever testes deve ser uma tarefa fácil.
+
+-Quando um único método necessita de diversos testes para garantir seu comportamento,
+o método em questão provavelmente é complexo e/ou possui diversas
+responsabilidades. Códigos assim possuem geralmente diversos caminhos diferentes
+e tendem a alterar muitos atributos internos do objeto, obrigando o desenvolvedor
+a criar muitos testes, caso queira ter uma alta cobertura de testes. A esse padrão, dei
+o nome de Muitos Testes Para Um Método.
+
+-Também pode ser entendido quando o desenvolvedor escreve muitos testes para
+a classe como um todo. Classes que expõem muitos métodos para o mundo de fora
+também tendem a possuir muitas responsabilidades. Chamo esse padrão de Muitos
+Testes Para Uma Classe
+
+-Outro problema de coesão pode ser encontrado quando o programador sente a
+necessidade de escrever cenários de teste muito grandes para uma única classe ou
+método. É possível inferir que essa necessidade surge em códigos que lidam com
+muitos objetos e fazem muita coisa. Nomeei esse padrão de Cenário Muito Grande
+
+-A vontade de testar um método privado também pode ser considerado um indí-
+cio de problemas de coesão. Métodos privados geralmente servem para transformar
+o método público em algo mais fácil de ler. Ao desejar testá-lo de maneira isolada,
+o programador pode ter encontrado um método que possua uma responsabilidade
+suficiente para ser alocada em uma outra classe. A esse padrão, chamo de Testes em
+Método Que Não É Público
+
+-Lembre-se que esses padrões não dão qualquer certeza sobre o problema. Eles
+são apenas indícios. O programador, ao encontrar um deles, deve visitar o código de
+produção e realmente comprovar se existe um problema de coesão. De maneira mais
+geral, lembre-se que qualquer dificuldade na escrita de um cenário ou o trabalho
+excessivo para se criar cenários para testar uma única classe ou método pode indicar
+problemas de coesão
+
+-Classes devem ser simples. E classes simples são testadas de forma simples. A
+relação entre código de produção e código de teste é realmente forte. A busca pela
+simplicidade no teste nos leva ao encontro de um código de produção mais simples.
+E assim que deve ser.
 
 
 
 ---------- 7.6 Conclusão
+
+-Os testes podem nos dar dicas boas e baratas sobre o nível de coesão das nossas
+classes. Obviamente, você desenvolvedor deve estar atento a isso e melhorar o código
+de acordo.
+
+-Mas lembre-se que essas dicas são apenas heurísticas para problemas de coesão.
+Não é possível garantir que toda a vez que você se deparar com uma classe com muitos
+testes, ela apresenta problemas de coesão. Como tudo em engenharia de software,
+tudo depende de um contexto. Ou seja, mesmo com esses pequenos padrões, não
+conseguimos tirar o lado criativo e racional do desenvolvedor. Você deve avaliar caso
+a caso.

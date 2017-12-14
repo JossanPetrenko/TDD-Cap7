@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1.Entidades.Regras
 {
-    public class DezOuVintePorCento : IRegraDeCalculo
+    public class DezOuVintePorCento  : RegraDeCalculo
     {
-        public double Calcula(Funcionario funcionario)
+        protected override double PorcentagemBase()
         {
-            if (funcionario.Salario > 3000)
-            {
-                return funcionario.Salario * 0.8;
-            }
-            return funcionario.Salario * 0.9;
+            return 0.9;
+        }
+        protected override double PorcentagemAcimaDoLimite()
+        {
+            return 0.8;
+        }
+        protected override int Limite()
+        {
+            return 3000;
         }
     }
 }
